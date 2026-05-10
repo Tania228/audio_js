@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media</title>
+</head>
+<body>
+
+    <div class="timeline-container">
+        <div class="timeline" id="timeline"></div>
+
+        <div class="input-area">
+            <textarea id="postInput" placeholder="Введите текст поста..."></textarea>
+        </div>
+    </div>
+
+    <!-- Модальное окно для ручного ввода координат -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Координаты не доступны</h3>
+            <p>Введите координаты вручную</p>
+            <input type="text" id="manualCoords" placeholder="Широта, Долгота">
+            <button id="submitCoords">Подтвердить</button>
+            <button id="cancelCoords">Отмена</button>
+        </div>
+    </div>
+
+</body>
+</html>
