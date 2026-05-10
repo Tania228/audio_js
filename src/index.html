@@ -12,6 +12,24 @@
 
         <div class="input-area">
             <textarea id="postInput" placeholder="Введите текст поста..."></textarea>
+
+            <div class="button-group">
+                <button id="submitTextBtn" class="submit-btn">Отправить текст</button>
+                <button id="audioRecordBtn" class="audio-btn">Записать аудио</button>
+            </div>
+
+            <div id="audioRecordingPanel" class="recording-panel hidden">
+            <div class="recording-info">
+                <span class="recording-icon">🔴</span>
+                <span id="audioTimer">00:00</span>
+            </div>
+            <div class="recording-actions">
+                <button id="stopRecordingBtn" class="stop-btn">⏹Остановить</button>
+                <button id="cancelRecordingBtn" class="cancel-recording-btn">Отмена</button>
+            </div>
+        </div>
+
+        </div>
         </div>
     </div>
 

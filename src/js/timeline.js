@@ -1,4 +1,5 @@
 import TimelinePosts from './timeline_posts.js';
+import TimelineAudio from './timeline_audio.js'
 
 
 export default class Timeline {
@@ -6,13 +7,9 @@ export default class Timeline {
         this.timelineContainer = document.getElementById('timeline');
     }
 
-    addPost(text, coords) {
-        const post = new TimelinePosts(text, coords);  
-        const postElement = post.render();     
-
-        this.timelineContainer.insertBefore(
-            postElement,  
-            this.timelineContainer.firstChild  
-        );
+    addPost(text, coords, type = 'text', audioUrl = null) {
+        const post = new TimelinePosts(text, coords, type, audioUrl);
+        const postElement = post.render();
+        this.timelineContainer.insertBefore(postElement, this.timelineContainer.firstChild);
     }
 }
