@@ -10,6 +10,6 @@ export default class Timeline {
     addPost(text, coords, type = 'text', audioUrl = null) {
         const post = new TimelinePosts(text, coords, type, audioUrl);
         const postElement = post.render();
-        this.timelineContainer.insertBefore(postElement, this.timelineContainer.firstChild);
+        this.timelineContainer.prepend(postElement);
     }
 }

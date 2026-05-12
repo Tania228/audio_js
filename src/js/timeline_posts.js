@@ -19,12 +19,12 @@ export default class TimelinePosts {
                     <audio controls src="${this.audioUrl}"></audio>
                 </div>
             `;
-        }
+        } 
 
         postElement.innerHTML = `
             <div class="post-text"></div>
             <div class="post-coords"></div>
-            <div class="post-date"></div>
+            <time class="post-date"></time>
             ${mediaHtml}
         `;
 

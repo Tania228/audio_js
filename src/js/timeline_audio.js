@@ -22,17 +22,10 @@ export default class TimelineAudio {
             this.mediaRecorder.start();
             this.isRecording = true;
             this.startTime = Date.now();
-            console.log('✅ Запись началась');
+            console.log('Запись началась');
             return true;
         } catch (error) {
             console.error('Ошибка доступа к микрофону:', error);
-            if (error.name === 'NotAllowedError') {
-                alert('Вы запретили доступ к микрофону. Разрешите доступ в настройках браузера.');
-            } else if (error.name === 'NotFoundError') {
-                alert('Микрофон не найден. Подключите микрофон.');
-            } else {
-                alert('Не удалось получить доступ к микрофону.');
-            }
             throw error;
         }
     }
@@ -44,7 +37,7 @@ export default class TimelineAudio {
                     const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
                     const audioUrl = URL.createObjectURL(audioBlob);
                     this.cleanup();
-                    console.log('✅ Запись остановлена');
+                    console.log('Запись остановлена');
                     resolve(audioUrl);
                 };
                 this.mediaRecorder.stop();

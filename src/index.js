@@ -9,7 +9,9 @@ class App {
         this.audioRecorder = new TimelineAudio();
         
         this.postInput = document.getElementById('postInput');
+        this.errorMessage = document.getElementById('errorMessage');
         this.modal = document.getElementById('modal');
+        this.modalError = document.getElementById('modalError');
         this.submitTextBtn = document.getElementById('submitTextBtn');
         this.audioRecordBtn = document.getElementById('audioRecordBtn');
         this.audioRecordingPanel = document.getElementById('audioRecordingPanel');
@@ -25,6 +27,29 @@ class App {
         this.timerInterval = null;
         
         this.init();
+    }
+    
+    showError(message) {
+        if (this.errorMessage) {
+            this.errorMessage.textContent = message;
+            this.errorMessage.classList.remove('hidden');
+            setTimeout(() => {
+                this.errorMessage.classList.add('hidden');
+            }, 3000);
+        }
+    }
+    
+    showModalError(message) {
+        if (this.modalError) {
+            this.modalError.textContent = message;
+            this.modalError.classList.remove('hidden');
+        }
+    }
+    
+    hideModalError() {
+        if (this.modalError) {
+            this.modalError.classList.add('hidden');
+        }
     }
     
     init() {
@@ -53,11 +78,18 @@ class App {
         
         this.submitBtn.addEventListener('click', () => this.submitManualCoords());
         this.cancelBtn.addEventListener('click', () => this.cancelManual());
+        
+        this.manualCoordsInput.addEventListener('input', () => {
+            this.hideModalError();
+        });
     }
     
     submitText() {
         const text = this.postInput.value.trim();
-        if (!text) return;
+        if (!text) {
+            this.showError('Введите текст поста');
+            return;
+        }
         
         this.pendingText = text;
         
@@ -77,7 +109,7 @@ class App {
                 }
             );
         } else {
-            alert('Geolocation не поддерживается');
+            this.showError('Geolocation не поддерживается вашим браузером');
         }
     }
     
@@ -91,7 +123,13 @@ class App {
             this.audioRecordingPanel.classList.remove('hidden');
             this.startTimer();
         } catch (error) {
-            alert('Не удалось получить доступ к микрофону. Проверьте разрешения.');
+            if (error.name === 'NotAllowedError') {
+                this.showError('Разрешите доступ к микрофону в настройках браузера');
+            } else if (error.name === 'NotFoundError') {
+                this.showError('Микрофон не найден. Подключите микрофон');
+            } else {
+                this.showError('Не удалось получить доступ к микрофону');
+            }
         }
     }
     
@@ -122,6 +160,7 @@ class App {
         this.audioRecorder.cancelRecording();
         this.resetRecordingUI();
         this.pendingText = null;
+        this.pendingAudioUrl = null;
     }
     
     resetRecordingUI() {
@@ -148,14 +187,14 @@ class App {
                 }
             );
         } else {
-            alert('Geolocation не поддерживается');
+            this.showError('Geolocation не поддерживается');
         }
     }
     
     submitManualCoords() {
         const coordsString = this.manualCoordsInput.value.trim();
         if (!coordsString) {
-            alert('Введите координаты');
+            this.showModalError('Введите координаты');
             return;
         }
         
@@ -165,7 +204,7 @@ class App {
             if (this.pendingAudioUrl) {
                 this.timeline.addPost(this.pendingText, coords, 'audio', this.pendingAudioUrl);
                 this.pendingAudioUrl = null;
-            } else if (this.pendingText !== null) {
+            } else {
                 this.timeline.addPost(this.pendingText, coords, 'text');
             }
             
@@ -173,8 +212,9 @@ class App {
             this.pendingText = null;
             this.modal.classList.add('hidden');
             this.manualCoordsInput.value = '';
+            this.hideModalError();
         } catch (error) {
-            alert(error.message);
+            this.showModalError(error.message);
         }
     }
     
@@ -183,6 +223,7 @@ class App {
         this.pendingText = null;
         this.pendingAudioUrl = null;
         this.manualCoordsInput.value = '';
+        this.hideModalError();
     }
 }
 
